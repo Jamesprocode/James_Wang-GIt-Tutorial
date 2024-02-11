@@ -1,0 +1,167 @@
+\documentclass[10pt,twocolumn]{article}
+
+% use the oxycomps style file
+\usepackage{oxycomps}
+
+% usage: \fixme[comments describing issue]{text to be fixed}
+% define \fixme as not doing anything special
+\newcommand{\fixme}[2][]{#2}
+% overwrite it so it shows up as red
+\renewcommand{\fixme}[2][]{\textcolor{red}{#2}}
+% overwrite it again so related text shows as footnotes
+%\renewcommand{\fixme}[2][]{\textcolor{red}{#2\footnote{#1}}}
+
+% read references.bib for the bibtex data
+\bibliography{references}
+
+% include metadata in the generated pdf file
+\pdfinfo{
+    /Title (Concise Git Tutorial in Github)
+    /Author (James Wang)
+}
+
+% set the title and author information
+\title{Concise Git Tutorial in Github}
+\author{James Wang}
+\affiliation{Occidental College}
+\email{jwang2@oxy.edu}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Git is a distributed version control system designed to handle everything from small to very large projects with speed and efficiency. It allows multiple developers to work on a project simultaneously without interfering with each other's work. Here is a detailed toturial to master git for any computer science project. This toruial will be in the format of command line instructions. At the every end of each paragraph, there will be command line for each action.
+
+\section{Installing Git}
+
+Before you can use Git, you need to install it on your system. This process varies depending on your operating system.
+\begin{itemize}
+    \item For Windows: Download and install from git-scm.com.
+    \item For macOS: Use brew install git if you have Homebrew, or download from git-scm.com.
+    \item For Linux: Use sudo apt-get install git for Debian/Ubuntu, sudo yum install git for Fedora, or the appropriate package manager command for your distro.
+\end{itemize}
+
+\subsection{Configure Git}
+
+After installation, it's important to set your user name and email address because Git embeds this information in each commit you make. This is crucial for collaboration, as it allows others to identify who made which changes.
+
+\begin{lstlisting}[language=bash]
+  $ git config --global user.name "Your Name"
+  $ git config --global user.email "youremail@example.com"
+\end{lstlisting}
+
+
+\subsection{Initializing/Cloning a Repository}
+
+Initializing a new repository creates a new Git repository in your local directory. It's the first step in version controlling new projects.
+\begin{lstlisting}[language=bash]
+  $ git init
+\end{lstlisting}
+Cloning an existing repository makes a copy of an existing Git repository, typically from a remote source like GitHub, to your local machine. This allows you to work on the project locally.
+\begin{lstlisting}[language=bash]
+  $ git clone https://github.com/user/repo.git
+\end{lstlisting}
+
+\section{Making Changes}
+
+In Git, making changes involves editing, adding, deleting, or moving files in your working directory. These modifications are local, meaning they're only on your machine until you decide to share them with your team or back them up in a remote repository. Git tracks these changes through a three-stage process: the working directory, the staging area (index), and the repository itself. Initially, all changes are in the working directory, where you can freely edit your files. Once you're satisfied with your changes, you stage them, which means you're marking them for inclusion in your next commit. Staging allows you to curate exactly what will go into your next commit, rather than indiscriminately including all changes. This granularity is particularly useful in projects where you might want to commit different sets of changes separately. After staging, you commit your changes to the repository, which takes a snapshot of your staged changes, creating a new commit in the project's history. This commit is a checkpoint that you can revert to or build upon in the future. Each commit contains a unique ID, the changes made, a timestamp, and author information, creating a transparent and traceable development history.
+\subsection{Adding Changes}
+Before you can commit any changes, you need to add them to the staging area. The git add command allows you to select which changes you want to include in the next commit.
+\begin{itemize}
+    \item Add a specific file:
+    \begin{lstlisting}[language=bash]
+    $ git add filename
+    \end{lstlisting}
+    \item Add all changes (in the current directory and subdirectories):
+    \begin{lstlisting}[language=bash]
+    $ git add .
+    \end{lstlisting}
+\end{itemize}
+
+\subsection{Committing Changes}
+Committing is the process of saving your changes to the local repository. Each commit has a message associated with it to describe the changes made, which helps in tracking the project history.
+\begin{lstlisting}[language=bash]
+    $ git commit -m "Commit message describing the changes".
+    \end{lstlisting}
+
+\subsection{Pushing Changes}
+Pushing refers to sending your committed changes to a remote repository. This is how you share your work with others or back up your local commits to a remote server.
+\begin{lstlisting}[language=bash]
+    $ git push origin branch_name
+    \end{lstlisting}
+
+
+\subsection{Pulling Changes}
+Pulling is the process of fetching changes from a remote repository and merging them into your local branch. It's a way to keep your local repository up-to-date with others' changes.
+\begin{lstlisting}[language=bash]
+    $ git pull origin branch_name
+    \end{lstlisting}
+
+\section{Stashes}
+Stashes in Git offer a powerful way to temporarily sideline changes without committing them, allowing you to switch contexts or branches with a clean working directory. Imagine you're in the middle of working on a feature when an urgent bug fix comes up. Instead of committing half-done work or losing your changes, you can use git stash to save your modifications away in a stack-like structure, clearing your working directory. You can then address the urgent task on a different branch. Stashes can hold multiple sets of changes; you can push changes to your stash stack and pop or apply them back to your working directory as needed. This feature is particularly useful in managing workflow interruptions, enabling you to switch tasks without committing incomplete code or losing progress.
+
+\begin{itemize}
+    \item Stash changes: Temporarily shelves changes so you can work on a different task.
+    \begin{lstlisting}[language=bash]
+    $ git stash
+    \end{lstlisting}
+    \item List stashes:
+    \begin{lstlisting}[language=bash]
+    $ git stash list
+    \end{lstlisting}
+    \item Apply the last stashed state:
+    \begin{lstlisting}[language=bash]
+    $ git stash apply
+    \end{lstlisting}
+\end{itemize}
+
+\section{Branches}
+Branches are a fundamental aspect of Git, allowing seamless parallel development. A branch in Git represents an independent line of development, enabling you to work on new features, fixes, or experiments in isolation from the main codebase. The default branch in Git is usually called master or main, serving as the primary branch where the final product evolves. When you create a new branch, you're making a divergent copy at that point in time, which can be developed independently. Changes made in a branch do not affect the main branch or other branches until they are merged. This branching model facilitates collaborative workflows, where developers can work on different features or tasks simultaneously without interfering with each other's work. Once a branch's work is complete and tested, it can be merged back into the main branch, integrating the new changes into the project.
+
+\begin{itemize}
+    \item Creating a new branch:
+    \begin{lstlisting}[language=bash]
+    $ git branch branch_name
+    \end{lstlisting}
+    \item Switching to a branch:
+    \begin{lstlisting}[language=bash]
+    $ git switch branch_name
+    \end{lstlisting}
+    \item Creating a new branch and switching to it:
+    \begin{lstlisting}[language=bash]
+    $ git switch -c branch_name
+    \end{lstlisting}
+\end{itemize}
+
+\subsection{Merging Branches}
+Merging is the process of combining the changes from one branch into another. It's a common way to incorporate completed work from one branch (e.g., a feature branch) into the main branch.
+\begin{lstlisting}[language=bash]
+    $ git merge branch_name
+    \end{lstlisting}
+\subsection{Dealing with Conflicts}
+Conflicts occur when merging branches if the same part of the code has been modified in different ways. Git will mark the file as conflicted and halt the merge process, allowing you to resolve the conflict manually. If a merge results in conflicts, Git will notify you. You can manually edit the files to resolve the conflicts. After resolving the conflict, you can mark as resolved and commit:
+\begin{lstlisting}[language=bash]
+    $ git add .
+    $ git commit -m "Resolved conflicts"
+    \end{lstlisting}
+
+
+
+
+\section{Tips and Device}
+\subsection{Viewing History}
+The git log command shows the commit history for the current branch, allowing you to see the changes made over time and by whom.
+\begin{lstlisting}[language=bash]
+    $ git log
+    \end{lstlisting}
+
+\subsection{Help}
+If you ever need help with a Git command, git help provides useful information and a list of available commands, while git command --help gives detailed information about a specific command.
+\begin{lstlisting}[language=bash]
+    $ git help
+    \end{lstlisting}
+\section{Conclusion}
+This Git tutorial has provided a foundational understanding of key Git operations, from setting up and configuring your Git environment to advanced workflows involving stashing, branching, and merging. Git's flexibility in handling version control tasks makes it an indispensable tool for developers, allowing for efficient collaboration and project management. By mastering these fundamental commands and concepts, you'll be well-equipped to navigate the complexities of software development, maintain a clean and organized codebase, and contribute to projects of any scale with confidence. Remember, the journey to Git mastery is ongoing, and the best way to become proficient is through regular practice, experimentation, and continuous learning.
+\end{document}
